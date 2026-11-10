@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CIBO 메뉴</title>
+<meta name="description" content="CIBO 이탈리안 · 서울 동대문구 천장산로4길 45 · 생면 파스타, 리조또, 피자">
+<meta name="theme-color" content="#e7dabf">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23fff' stroke='%232f8f4e' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23d23b3b' stroke-width='4'/%3E%3Ctext x='50' y='59' text-anchor='middle' font-size='25' font-weight='700' fill='%235b7682' font-family='Arial'%3ECIBO%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 종이 메뉴판(크라프트지)을 옮긴 한 줄짜리 목록, 분류 칩이 위에 붙어 따라옴 */
+:root{
+  --paper:#e7dabf; --paper-2:#efe5d0; --ink:#2e2418; --ink-2:#6b5a44; --rule:#cbb894;
+  --wine:#9e2f37; --basil:#2f6b45;
+  --f-display:"Gowun Batang","Nanum Myeongjo",Georgia,serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --paper:#1f1a14; --paper-2:#2a231b; --ink:#eee3cc; --ink-2:#b4a386; --rule:#4a3e30;
+  --wine:#e1838a; --basil:#8cc49f; color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+
+header.hero{padding-block:28px 18px;text-align:center}
+.logo{width:76px;height:76px;margin:0 auto 10px;display:block}
+.logo svg{width:100%;height:100%;display:block}
+h1{font-family:var(--f-display);font-weight:700;font-size:30px;letter-spacing:.12em;margin:0;color:var(--wine)}
+.tagline{margin:4px 0 0;color:var(--ink-2);font-size:14px}
+.lang{display:inline-flex;margin-top:14px;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--paper-2)}
+.lang button{border:0;background:transparent;padding:5px 14px;border-radius:999px;font-size:13px;font-weight:700;color:var(--ink-2)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+nav.cats{position:sticky;top:0;z-index:5;background:var(--paper);border-block:1px solid var(--rule);
+  padding-top:env(safe-area-inset-top,0px)}
+nav.cats .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:9px;scrollbar-width:none}
+nav.cats .wrap::-webkit-scrollbar{display:none}
+nav.cats a{flex:none;text-decoration:none;color:var(--ink-2);font-size:14px;font-weight:700;padding:5px 12px;border-radius:999px;border:1px solid transparent}
+nav.cats a.on{color:var(--ink);border-color:var(--ink)}
+
+section{padding-block:22px 6px;scroll-margin-top:56px}
+.item{scroll-margin-top:64px}
+section h2{font-family:var(--f-display);font-size:24px;margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
+section h2 small{font-family:var(--f-body);font-size:13px;color:var(--ink-2);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.items{list-style:none;margin:0;padding:0}
+.item{display:flex;gap:14px;padding-block:14px;border-bottom:1px dashed var(--rule)}
+.item:last-child{border-bottom:0}
+.item .ph{flex:none;width:88px;height:88px;border-radius:10px;overflow:hidden;background:var(--paper-2);max-width:100%}
+.item .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.item .tx{flex:1;min-width:0}
+.item .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.item .nm{font-weight:700;font-size:17px}
+.item .pr{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;color:var(--wine)}
+.item .sub{font-size:13px;color:var(--ink-2);letter-spacing:.02em}
+.item .ds{font-size:14.5px;margin-top:4px;color:var(--ink)}
+.item.tight{padding-block:9px}
+.item.tight .nm{font-size:16px;font-weight:500}
+.note{font-size:13.5px;color:var(--ink-2);margin:6px 0 0}
+.note b{color:var(--wine)}
+
+.item.feat{flex-direction:column;gap:10px}
+.item.feat .big{display:block;border:0;padding:0;background:var(--paper-2);border-radius:14px;overflow:hidden;aspect-ratio:4/3;max-width:100%;width:100%;cursor:zoom-in;box-shadow:0 1px 0 var(--rule)}
+.item.feat .big img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.item.feat .big:hover img{transform:scale(1.03)}
+.strip{display:flex;gap:10px;overflow-x:auto;padding-block:4px 2px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip a{flex:none;width:132px;scroll-snap-align:start;text-decoration:none;color:var(--ink)}
+.strip a span.im{display:block;width:132px;height:132px;border-radius:12px;overflow:hidden;background:var(--paper-2)}
+.strip a img{width:100%;height:100%;object-fit:cover;display:block}
+.strip a b{display:block;font-size:13.5px;margin-top:6px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.picks{padding-block:6px 4px}
+.picks h2{font-family:var(--f-display);font-size:18px;margin:0 0 10px}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(20,15,10,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb img{max-width:100%;max-height:78vh;border-radius:12px;display:block}
+.lb p{margin:0;color:#f1e7d3;font-size:16px;font-weight:700;text-align:center}
+.lb p small{display:block;font-weight:400;font-size:13px;color:#cbbd9f}
+.lb button{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));border:0;background:rgba(255,255,255,.15);color:#fff;width:44px;height:44px;border-radius:999px;font-size:22px}
+@media (prefers-reduced-motion:reduce){.item.feat .big img{transition:none}}
+.promise{margin-top:26px;background:var(--paper-2);border:1px solid var(--rule);border-radius:12px;padding:16px 18px}
+.promise h3{font-family:var(--f-display);font-size:18px;margin:0 0 8px}
+.promise ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14.5px}
+.promise b{color:var(--wine)}
+
+footer{padding-block:26px 36px;text-align:center;color:var(--ink-2);font-size:14px;line-height:1.8}
+footer .mean{font-family:var(--f-display);font-size:16px;color:var(--ink)}
+footer a{color:var(--basil);font-weight:700;text-decoration:none}
+footer .tel{font-variant-numeric:tabular-nums;user-select:all}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="hero wrap">
+  <span class="logo"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#2f8f4e" stroke-width="5"/><circle cx="50" cy="50" r="38" fill="none" stroke="#d23b3b" stroke-width="4"/><text x="50" y="59" text-anchor="middle" font-size="25" font-weight="700" fill="#5b7682" font-family="Arial,Helvetica,sans-serif" letter-spacing="1">CIBO</text></svg></span>
+  <h1>CIBO</h1>
+  <p class="tagline" data-ko="생면 파스타 · 리조또 · 피자" data-en="Fresh pasta · Risotto · Pizza">생면 파스타 · 리조또 · 피자</p>
+  <div class="lang" role="group" aria-label="언어 / Language">
+    <button id="lkKo" aria-pressed="true">한국어</button>
+    <button id="lkEn" aria-pressed="false">English</button>
+  </div>
+</header>
+
+<nav class="cats" aria-label="메뉴 분류"><div class="wrap" id="catNav"></div></nav>
+
+<div class="wrap picks" id="picks"></div>
+<main class="wrap" id="menu"></main>
+<div id="lb"></div>
+
+<div class="wrap">
+  <div class="promise">
+    <h3 data-ko="치보의 약속" data-en="Our kitchen">치보의 약속</h3>
+    <ul id="promise"></ul>
+  </div>
+</div>
+
+<footer class="wrap">
+  <div class="mean" data-ko="'치보'는 이탈리아어로 '음식'이란 뜻입니다" data-en="“Cibo” means “food” in Italian">'치보'는 이탈리아어로 '음식'이란 뜻입니다</div>
+  <div data-ko="서울 동대문구 천장산로4길 45 1층" data-en="1F, 45 Cheonjangsan-ro 4-gil, Dongdaemun-gu, Seoul">서울 동대문구 천장산로4길 45 1층</div>
+  <div class="tel">02-960-7340</div>
+  <a href="https://www.instagram.com/cibo_pasta" target="_blank" rel="noopener">Instagram @cibo_pasta</a>
+</footer>
+
+<script>
+(function(){
+"use strict";
+// 종이 메뉴판 기준. 사진은 img/<id>.jpg 파일이 있으면 자동으로 보입니다.
+const CATS=[
+ {k:"pasta",ko:"파스타",en:"Pasta"},
+ {k:"risotto",ko:"리조또",en:"Risotto"},
+ {k:"salad",ko:"샐러드",en:"Salad"},
+ {k:"pizza",ko:"피자",en:"Pizza"},
+ {k:"drink",ko:"음료",en:"Non alcohol"},
+ {k:"alcohol",ko:"주류",en:"Alcohol"}
+];
+const M=[
+ ["bucaniera-tomato","pasta","부카니에라 토마토","Bucaniera (tomato)",16000,"신선한 각종 해산물 토마토소스","Mixed seafood and tomato sauce"],
+ ["bucaniera-cream","pasta","부카니에라 크림","Bucaniera (cream)",16000,"신선한 각종 해산물 크림 소스","Mixed seafood and cream sauce"],
+ ["cioppino","pasta","쵸피노","Cioppino",18000,"신선한 해산물 토마토 스프 파스타","Spicy tomato seafood soup with pasta"],
+ ["amatriciana","pasta","아마트리치아나","Amatriciana",14000,"홈메이드 베이컨, 치즈, 매콤한 토마토 소스","Red pepper, bacon, and spicy tomato sauce"],
+ ["stracciatella","pasta","스트라치아텔라","Stracciatella",15500,"부드럽고 크리미한 치즈와 상큼한 토마토 소스","Stracciatella cheese with tomato sauce"],
+ ["gamberoni","pasta","감베로니","Gamberoni",18000,"왕새우와 날치알로 맛을 낸 짙은 새우향의 매콤한 토마토 소스","King prawn, flying fish roe and spicy tomato sauce"],
+ ["ragu","pasta","라구","Ragu",17000,"치보 스타일 소고기 소스","Traditional slow-cooked beef ragu"],
+ ["carbonara","pasta","까르보나라","Carbonara",14000,"홈메이드 베이컨, 그라나파다노 치즈로 맛을 낸 크림 소스","Homemade bacon, grana padano and cream sauce"],
+ ["gorgonzola","pasta","고르곤졸라","Gorgonzola",15000,"모둠 버섯으로 맛을 낸 고르곤졸라 크림 소스","Mixed mushroom and gorgonzola cheese cream sauce"],
+ ["caviale","pasta","카비알레","Caviale",15500,"새우와 날치알로 맛을 낸 매콤한 로제 소스","With shrimp and chili pepper rose sauce"],
+ ["salmone","pasta","살모네","Salmone",18000,"구운 연어와 홀그레인 머스터드로 맛을 낸 크림 소스","Salmon, and wholegrain mustard cream sauce"],
+ ["aglio","pasta","알리오","Aglio",12500,"구수한 마늘 향의 매콤한 올리브오일 소스","Red hot pepper, and olive oil sauce"],
+ ["pescatore","pasta","페스카토레","Pescatore",16500,"신선한 해산물의 화이트와인 소스","Seafood, and white wine sauce"],
+ ["vongole","pasta","봉골레","Vongole",14000,"마늘 향이 짙은 조개의 화이트와인 소스","Garlic, and white wine sauce"],
+ ["cacio-e-pepe","pasta","카치오에페페","Cacio e pepe",15000,"그라나파다노 치즈와 후추, 가쓰오부시로 맛을 낸 파스타","Grana padano, black pepper, and bonito flakes"],
+ ["marinara","risotto","마리나라","Marinara",16000,"신선한 해산물에 토마토소스 리조또","Risotto with seafood and tomato sauce"],
+ ["porcini","risotto","포르치니","Porcini",15000,"모둠 버섯을 곁들인 버섯 크림 리조또","Mushroom risotto with parmesan cheese"],
+ ["cibo-salad","salad","치보 샐러드","Cibo salad",15000,"직접 만든 베이컨과 렌치 드레싱","Romaine lettuce, homemade bacon, and ranch dressing"],
+ ["margherita","pizza","마르게리따","Margherita pizza",18000,"토마토 소스, 모짜렐라, 신선한 바질","Tomato sauce, mozzarella and fresh basil"],
+ ["pepsi","drink","펩시 / 펩시 제로 / 스프라이트","Pepsi / Pepsi Zero / Sprite",3000,"",""],
+ ["orange-juice","drink","오렌지주스","Orange juice",5000,"",""],
+ ["cass","alcohol","카스","Cass",4000,"",""],
+ ["wine-glass","alcohol","하우스 와인 (레드·화이트) 한 잔","House wine (red / white) · glass",5500,"",""],
+ ["wine-bottle","alcohol","하우스 와인 (레드·화이트) 한 병","House wine (red / white) · bottle",25000,"",""]
+];
+// 사진이 올라가 있는 메뉴 (img/<id>.jpg). 사진을 더 올리면 여기에 id만 추가하세요.
+const PHOTOS=["pescatore","vongole","bucaniera-tomato","bucaniera-cream","cioppino","cacio-e-pepe","cibo-salad"];
+const NOTES={
+ risotto:{ko:'리조또는 <b>2,000원</b>을 추가하시면 치즈를 얹어 그라탕으로 해 드립니다. 쌀은 국내산입니다.',en:'Add <b>₩2,000</b> to have your risotto topped with cheese and gratinated. Korean rice.'},
+ pasta:{ko:'빵 추가 2p <b>3,000원</b> (식사에 기본 빵이 함께 나갑니다)',en:'Extra bread (2 pcs) <b>₩3,000</b> · house bread comes with every meal'},
+ pizza:{ko:'피자에는 식사빵이 나가지 않습니다.',en:'House bread is not served with pizza.'}
+};
+const PROMISE={
+ ko:['매일 <b>계란으로 반죽한 생면</b>을 씁니다','모든 식사에 매장에서 <b>직접 만든 식사빵</b>이 나갑니다 (피자 제외)','<b>인공조미료</b>를 쓰지 않습니다','모든 식사는 <b>포장</b>할 수 있습니다'],
+ en:['Fresh <b>egg pasta</b> made every day','<b>House-baked bread</b> with every meal (except pizza)','<b>No artificial seasonings</b>','Everything is available <b>to go</b>']
+};
+let lang="ko";
+try{const q=new URLSearchParams(location.search).get("lang");if(q==="en")lang="en";else if(!q&&!/^ko/i.test(navigator.language||"ko"))lang="en"}catch(e){}
+
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const price=n=>lang==="ko"?n.toLocaleString("ko-KR")+"원":"₩"+n.toLocaleString("en-US");
+
+function render(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-ko]").forEach(el=>el.textContent=el.dataset[lang]);
+  $("lkKo").setAttribute("aria-pressed",lang==="ko");$("lkEn").setAttribute("aria-pressed",lang==="en");
+  $("catNav").innerHTML=CATS.map(c=>'<a href="#'+c.k+'" data-k="'+c.k+'">'+esc(c[lang])+'</a>').join("");
+  $("menu").innerHTML=CATS.map(c=>{
+    const list=M.filter(m=>m[1]===c.k),tight=c.k==="drink"||c.k==="alcohol";
+    return '<section id="'+c.k+'"><h2>'+esc(c[lang])+'<small>'+esc(lang==="ko"?c.en:c.ko)+'</small></h2>'+
+      (NOTES[c.k]?'<p class="note">'+NOTES[c.k][lang]+'</p>':'')+
+      '<ul class="items">'+list.map(m=>{const nm=lang==="ko"?m[2]:m[3],sub=lang==="ko"?m[3]:m[2],ds=lang==="ko"?m[5]:m[6];
+        const feat=PHOTOS.includes(m[0]);
+        return '<li class="item'+(tight?" tight":"")+(feat?" feat":"")+'" id="i-'+m[0]+'">'+(tight?'':feat?'<button class="big" data-zoom="'+m[0]+'" aria-label="'+esc(nm)+' 사진 크게 보기"><img alt="'+esc(nm)+'" src="img/'+m[0]+'.jpg" loading="lazy"></button>':'<div class="ph"><img alt="" src="img/'+m[0]+'.jpg" loading="lazy" onerror="this.parentNode.remove()"></div>')+
+          '<div class="tx"><div class="row"><span class="nm">'+esc(nm)+'</span><span class="pr">'+price(m[4])+'</span></div>'+
+          (tight?'':'<div class="sub">'+esc(sub)+'</div>')+(ds?'<div class="ds">'+esc(ds)+'</div>':'')+'</div></li>'}).join("")+'</ul></section>'}).join("");
+  $("promise").innerHTML=PROMISE[lang].map(x=>'<li>'+x+'</li>').join("");
+  $("picks").innerHTML='<h2>'+(lang==="ko"?"사진으로 보기":"See the dishes")+'</h2><div class="strip">'+PHOTOS.map(id=>{const m=M.find(x=>x[0]===id);if(!m)return"";const nm=lang==="ko"?m[2]:m[3];
+    return '<a href="#i-'+id+'"><span class="im"><img alt="" src="img/'+id+'.jpg" loading="lazy"></span><b>'+esc(nm)+'</b></a>'}).join("")+'</div>';
+  spy();
+}
+function $(id){return document.getElementById(id)}
+function spy(){
+  const secs=[...document.querySelectorAll("main section")];let cur=secs[0]&&secs[0].id;
+  secs.forEach(s=>{if(s.getBoundingClientRect().top<120)cur=s.id});
+  document.querySelectorAll("#catNav a").forEach(a=>{const on=a.dataset.k===cur;a.classList.toggle("on",on)});
+}
+addEventListener("scroll",spy,{passive:true});
+function zoom(id){const m=M.find(x=>x[0]===id);if(!m)return;const nm=lang==="ko"?m[2]:m[3],ds=lang==="ko"?m[5]:m[6];
+  $("lb").innerHTML='<div class="lb" role="dialog" aria-modal="true" aria-label="'+esc(nm)+'"><button aria-label="닫기">×</button><img alt="'+esc(nm)+'" src="img/'+id+'.jpg"><p>'+esc(nm)+' · '+price(m[4])+(ds?'<small>'+esc(ds)+'</small>':'')+'</p></div>';
+  const close=()=>{$("lb").innerHTML="";document.removeEventListener("keydown",esc2)};const esc2=e=>{if(e.key==="Escape")close()};
+  $("lb").firstChild.addEventListener("click",close);document.addEventListener("keydown",esc2);$("lb").querySelector("button").focus()}
+$("menu").addEventListener("click",e=>{const b=e.target.closest("[data-zoom]");if(b)zoom(b.dataset.zoom)});
+$("lkKo").onclick=()=>{lang="ko";render()};
+$("lkEn").onclick=()=>{lang="en";render()};
+render();
+})();
+</script>
+</body>
+</html>
